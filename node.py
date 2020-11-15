@@ -15,9 +15,12 @@ class Node:
     def __lt__(self, other):
         return self.fScore < other.fScore
 
-    def __eq__(self, other):
-        return (math.isclose(self.cords[0], other.cords[0]) and
-                math.isclose(self.cords[1], other.cords[1]))
+    def __repr__(self):
+        return f'Node{self.cords}: {self.fScore}'
+
+    # def __eq__(self, other):
+    #     return (math.isclose(self.cords[0], other.cords[0]) and
+    #             math.isclose(self.cords[1], other.cords[1]))
 
 if __name__ == '__main__':
     a = Node((2.161161, 7/3))
