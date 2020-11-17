@@ -23,5 +23,5 @@ Taki sam jak format pliku wejściowego. Punkty posortowane w kolejności ułoże
 Python
 
 ### Doprecyzowanie treści
-Każdy punkt w pliku wejściowym to jeden wierzchołek grafu. Każdy wierzchołek łączy się ze wszystkimi pozostałymi, a waga danej krawędzi to odległość między
+Każdy punkt w pliku wejściowym to jeden wierzchołek grafu. Każdy wierzchołek łączy się ze wszystkimi pozostałymi (graf pełny), a waga danej krawędzi to odległość między
 łączonymi punktami w układzie współrzędnych.
