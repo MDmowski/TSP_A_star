@@ -10,13 +10,17 @@ def loadFromFile(filename):
                 raise IOError
             cords = tuple(float(cord) for cord in parsedLine)
             newNode = Node(num, cords)
+            if num == 0:
+                startNode = newNode
             num += 1
             G.add(newNode)
 
         for node in G:
             node.neighbours = [neighbour for neighbour in G if neighbour != node]
 
-        return G
+        # G.remove(startNode)
+
+        return startNode, G
 
 if __name__ == '__main__':
     print(loadFromFile('cords.txt'))
