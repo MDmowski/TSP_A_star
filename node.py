@@ -1,4 +1,5 @@
 import math  # Compare floats
+import heuristic
 
 
 class Node:
@@ -6,12 +7,12 @@ class Node:
         self.neighbours = []
         self.cords = cords
         self.number = number
-        self.backRef = None
+        self.cameFrom = None
         self.fScore = float('inf')
         self.gScore = float('inf')
 
-    def calcuteFScore(self, unvisitedNodes):
-        self.fScore = self.gScore + h(unvistedNodes)
+    def calculateFScore(self, gScore, start, unvisitedNodes):
+        return gScore + heuristic.calculate(start, self, unvisitedNodes)
 
     def distance(self, other):
         return math.sqrt(math.pow(self.cords[0]-other.cords[0], 2)+math.pow(self.cords[1]-other.cords[1], 2))
@@ -20,7 +21,8 @@ class Node:
         return self.fScore < other.fScore
 
     def __repr__(self):
-        return f'Node{self.cords}: {self.fScore}'
+        cameFromNumber = self.cameFrom.number if self.cameFrom else None
+        return f'Node{self.number}(came: {cameFromNumber}): g:{self.gScore}, f:{self.fScore}'
 
     # def __eq__(self, other):
     #     return (math.isclose(self.cords[0], other.cords[0]) and
