@@ -1,6 +1,5 @@
-from node import Node
+import node
 import math
-
 
 def createEdge(srcNode, destNode):
     dist = srcNode - destNode 
@@ -12,12 +11,16 @@ def createEdge(srcNode, destNode):
     return edge
 
 
-def mst(unvisited):
+def mst(graph):
+
+    if len(graph) < 2:
+        return 0
+
     edges = []
     maxNumber = 1
-    for src in unvisited:
+    for src in graph:
         for dest in src.neighbours:
-            if dest in unvisited:
+            if dest in graph:
                 if (src.number > maxNumber):
                     maxNumber = src.number
                 if(dest.number > maxNumber):
@@ -37,31 +40,26 @@ def mst(unvisited):
             for i, current_id in enumerate(tree_id):
                 if(current_id == old_id):
                     tree_id[i] = new_id
-    print(mst)
     return cost
 
 
-def heuristic(start, unvisited):
-    mst_cost = mst(start, unvisited)
-    # closestNeighbour = start.neighbours[0]
-    # minDist = start - closestNeighbour
-    # for dest in start.neighbours:
-    #     dist = start - dest
-    #     if(dist < minDist):
-    #         minDist = dist 
+def calculateFScore(startNode, currentNode, unvisitedNodes):
+    mst_cost = mst(unvisitedNodes)
 
-    # The same as above but with generator expression
-    minDist = min(start - dest for dest in start.neighbours)
-
-    return mst_cost + start.gScore + minDist
+    if unvisitedNodes:
+        minDistToStart = min(startNode - neighbour for neighbour in unvisitedNodes)
+        minDistToCurrent = min(currentNode - neighbour for neighbour in unvisitedNodes)
+        return mst_cost + minDistToStart + minDistToCurrent
+    else:
+        return startNode - currentNode
 
 
 if __name__ == '__main__':
-    start = Node(0, (0, 0))
-    a = Node(1, (0, 1))
-    b = Node(2, (1, 0))
-    c = Node(3, (1, 1))
-    d = Node(4, (-1, 0))
+    start = node.Node(0, (0, 0))
+    a = node.Node(1, (0, 1))
+    b = node.Node(2, (1, 0))
+    c = node.Node(3, (1, 1))
+    d = node.Node(4, (-1, 0))
     start.neighbours = [a, b]
     a.neighbours = [start, b]
     b.neighbours = [start, a, c]
