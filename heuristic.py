@@ -1,7 +1,6 @@
 import node
 import math
 
-
 def createEdge(srcNode, destNode):
     dist = srcNode - destNode 
     edge = {
@@ -12,16 +11,16 @@ def createEdge(srcNode, destNode):
     return edge
 
 
-def mst(unvisited):
+def mst(graph):
 
-    if len(unvisited) < 2:
+    if len(graph) < 2:
         return 0
 
     edges = []
     maxNumber = 1
-    for src in unvisited:
+    for src in graph:
         for dest in src.neighbours:
-            if dest in unvisited:
+            if dest in graph:
                 if (src.number > maxNumber):
                     maxNumber = src.number
                 if(dest.number > maxNumber):
@@ -41,27 +40,18 @@ def mst(unvisited):
             for i, current_id in enumerate(tree_id):
                 if(current_id == old_id):
                     tree_id[i] = new_id
-    # print(mst)
     return cost
 
 
-def calculate(start, current, unvisited):
-    mst_cost = mst(unvisited)
-    # closestNeighbour = start.neighbours[0]
-    # minDist = start - closestNeighbour
-    # for dest in start.neighbours:
-    #     dist = start - dest
-    #     if(dist < minDist):
-    #         minDist = dist 
+def calculateFScore(startNode, currentNode, unvisitedNodes):
+    mst_cost = mst(unvisitedNodes)
 
-    # The same as above but with generator expression
-    if unvisited:
-        minDistToStart = min(start - dest for dest in unvisited)
-        minDistToCurrent = min(current - dest for dest in unvisited)
+    if unvisitedNodes:
+        minDistToStart = min(startNode - neighbour for neighbour in unvisitedNodes)
+        minDistToCurrent = min(currentNode - neighbour for neighbour in unvisitedNodes)
         return mst_cost + minDistToStart + minDistToCurrent
     else:
-        print('here: ', start - current)
-        return 0#start - current
+        return startNode - currentNode
 
 
 if __name__ == '__main__':

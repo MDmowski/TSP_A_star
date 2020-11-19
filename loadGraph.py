@@ -18,8 +18,6 @@ def loadFromFile(filename):
         for node in G:
             node.neighbours = [neighbour for neighbour in G if neighbour != node]
 
-        # G.remove(startNode)
-
         return startNode, G
 
 if __name__ == '__main__':
