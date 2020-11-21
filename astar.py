@@ -1,11 +1,11 @@
-import loadGraph
-from state import State
+import graphIO
+from AStarState import AStarState
 
 
-def astar():
-    startNode, G = loadGraph.loadFromFile('cords.txt')
+def astar(filename):
+    startNode, G = graphIO.loadGraph(filename)
 
-    startState = State([startNode], 0, G)
+    startState = AStarState([startNode], 0, G)
 
     openStates = {startState} 
     closedStates = set() 
@@ -18,9 +18,8 @@ def astar():
 
         if currentState.isFinal():
             print(currentState)
+            return(currentState.getCycleLength())
+            graphIO.savePath(currentState.path)
             break
 
         openStates.update(currentState.expand())
-
-if __name__ == '__main__':
-    astar()

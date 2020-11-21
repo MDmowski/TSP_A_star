@@ -1,9 +1,9 @@
-import loadGraph
+import graphIO
 from state import State
 
 
-def greedy():
-    startNode, G = loadGraph.loadFromFile('cords.txt')
+def greedy(filename):
+    startNode, G = graphIO.loadGraph(filename)
 
     startState = State([startNode], 0, G)
 
@@ -20,10 +20,7 @@ def greedy():
 
         if currentState.isFinal():
             print(currentState)
+            return(currentState.getCycleLength())
+            graphIO.savePath(currentState.path)
             break
-        currentState = min((state for state in newStates),key=lambda state: state.length - currentState.length)
-
-
-
-if __name__ == '__main__':
-    greedy()
+        currentState = min(newStates,key=lambda state: state.length - currentState.length)

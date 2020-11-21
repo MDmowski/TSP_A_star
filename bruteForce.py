@@ -1,9 +1,9 @@
-import loadGraph
+import graphIO
 from state import State
 
 
-def bruteForce():
-    startNode, G = loadGraph.loadFromFile('cords.txt')
+def bruteForce(filename):
+    startNode, G = graphIO.loadGraph(filename)
 
     startState = State([startNode], 0, G)
 
@@ -17,7 +17,7 @@ def bruteForce():
 
         openStates.update(currentState.expand())
 
-    print(min((state for state in closedStates if not state.unvisitedNodes), key=lambda state: state.fScore))
-
-if __name__ == '__main__':
-    bruteForce()
+    solution = min(state for state in closedStates if state.isFinal())
+    print(solution)
+    return(solution.getCycleLength())
+    graphIO.savePath(solution.path)
