@@ -18,8 +18,7 @@ def astar(filename):
 
         if currentState.isFinal():
             print(currentState)
-            return(currentState.getCycleLength())
-            graphIO.savePath(currentState.path)
+            return currentState.getCycleLength()
             break
 
         openStates.update(currentState.expand())

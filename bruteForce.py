@@ -19,5 +19,4 @@ def bruteForce(filename):
 
     solution = min(state for state in closedStates if state.isFinal())
     print(solution)
-    return(solution.getCycleLength())
-    graphIO.savePath(solution.path)
+    return solution.getCycleLength()

@@ -20,7 +20,5 @@ def greedy(filename):
 
         if currentState.isFinal():
             print(currentState)
-            return(currentState.getCycleLength())
-            graphIO.savePath(currentState.path)
-            break
+            return currentState.getCycleLength()
         currentState = min(newStates,key=lambda state: state.length - currentState.length)
