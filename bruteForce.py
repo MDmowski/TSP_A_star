@@ -2,7 +2,7 @@ import loadGraph
 from state import State
 
 
-def astar():
+def bruteForce():
     startNode, G = loadGraph.loadFromFile('cords.txt')
 
     startState = State([startNode], 0, G)
@@ -11,16 +11,13 @@ def astar():
     closedStates = set() 
 
     while openStates:
-        currentState = min(openStates)
+        currentState = openStates.pop()
 
-        openStates.remove(currentState)
         closedStates.add(currentState)
-
-        if currentState.isFinal():
-            print(currentState)
-            break
 
         openStates.update(currentState.expand())
 
+    print(min((state for state in closedStates if not state.unvisitedNodes), key=lambda state: state.fScore))
+
 if __name__ == '__main__':
-    astar()
+    bruteForce()
