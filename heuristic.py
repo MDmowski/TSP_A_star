@@ -14,7 +14,7 @@ def createEdge(srcNode, destNode):
 def mst(graph):
 
     if len(graph) < 2:
-        return 0
+        return [0]+list(graph)
 
     edges = []
     maxNumber = 1
@@ -31,6 +31,8 @@ def mst(graph):
     edges = sorted(edges, key=lambda item: item['weight'])
     tree_id = list(range(maxNumber+1))
 
+    appearances = [0]*(maxNumber+1)
+
     for edge in edges:
         if(tree_id[edge['srcNumber']] != tree_id[edge['destNumber']]):
             cost += edge['weight']
@@ -40,16 +42,34 @@ def mst(graph):
             for i, current_id in enumerate(tree_id):
                 if(current_id == old_id):
                     tree_id[i] = new_id
-    return cost
+            appearances[edge['srcNumber']] += 1
+            appearances[edge['destNumber']] += 1
+
+    singles = []
+    for i in range(len(appearances)):
+        if appearances[i] == 1:
+            singles.append(i)
+    ends = list(vertex for vertex in graph if vertex.number in singles)
+    return [cost]+ends
 
 
 def calculateFScore(startNode, currentNode, unvisitedNodes):
-    mst_cost = mst(unvisitedNodes)
-
-    if unvisitedNodes:
-        minDistToStart = min(startNode - neighbour for neighbour in unvisitedNodes)
-        minDistToCurrent = min(currentNode - neighbour for neighbour in unvisitedNodes)
-        return mst_cost + minDistToStart + minDistToCurrent
+    mstResult = mst(unvisitedNodes)
+    mst_cost = mstResult.pop(0)
+    if len(mstResult) > 1:
+        #minDistToStart = min(startNode - neighbour for neighbour in mstResult)
+        #minDistToCurrent = min(currentNode - neighbour for neighbour in mstResult)
+        minDist = float('inf')
+        for vertex in mstResult:
+            otherEnds = mstResult[:]
+            otherEnds.remove(vertex)
+            for otherVertex in otherEnds:
+                currentDist = (startNode - vertex) + (currentNode - otherVertex)
+                if currentDist < minDist: minDist = currentDist
+        return mst_cost + minDist
+        # return mst_cost + minDistToStart + minDistToCurrent
+    elif mstResult:
+        return (currentNode - mstResult[0])+ (startNode - mstResult[0])
     else:
         return startNode - currentNode
 
