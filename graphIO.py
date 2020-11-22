@@ -1,4 +1,7 @@
+import random
+
 from node import Node
+
 
 def loadGraph(filename):
     with open(filename, 'r') as inputfile:
@@ -19,6 +22,24 @@ def loadGraph(filename):
             node.neighbours = [neighbour for neighbour in G if neighbour != node]
 
         return startNode, G
+
+def generateRandomGraph(numberOfVertices):
+    lowerBound = 0
+    upperBound = 20
+    num = 0
+    G = set()
+    for _ in range(numberOfVertices):
+        cords = random.uniform(lowerBound, upperBound), random.uniform(lowerBound, upperBound)
+        newNode = Node(num, cords)
+        if num == 0:
+            startNode = newNode
+        num += 1
+        G.add(newNode)
+
+    for node in G:
+        node.neighbours = [neighbour for neighbour in G if neighbour != node]
+
+    return startNode, G
 
 def savePath(filename, path):
     with open(filename, 'w') as outputfile:

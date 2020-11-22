@@ -2,9 +2,7 @@ import graphIO
 from state import State
 
 
-def greedy(filename):
-    startNode, G = graphIO.loadGraph(filename)
-
+def greedy(startNode, G):
     startState = State([startNode], 0, G)
 
     openStates = {startState}

@@ -2,9 +2,7 @@ import graphIO
 from AStarState import AStarState
 
 
-def astar(filename):
-    startNode, G = graphIO.loadGraph(filename)
-
+def astar(startNode, G):
     startState = AStarState([startNode], 0, G)
 
     openStates = {startState} 
