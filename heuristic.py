@@ -14,7 +14,7 @@ def createEdge(srcNode, destNode):
 def mst(graph):
 
     if len(graph) < 2:
-        return 0
+        return [0]+list(graph)
 
     edges = []
     maxNumber = 1
@@ -31,6 +31,8 @@ def mst(graph):
     edges = sorted(edges, key=lambda item: item['weight'])
     tree_id = list(range(maxNumber+1))
 
+    appearances = [0]*(maxNumber+1)
+
     for edge in edges:
         if(tree_id[edge['srcNumber']] != tree_id[edge['destNumber']]):
             cost += edge['weight']
@@ -40,15 +42,23 @@ def mst(graph):
             for i, current_id in enumerate(tree_id):
                 if(current_id == old_id):
                     tree_id[i] = new_id
-    return cost
+            appearances[edge['srcNumber']] += 1
+            appearances[edge['destNumber']] += 1
+
+    singles = []
+    for i in range(len(appearances)):
+        if appearances[i] == 1:
+            singles.append(i)
+    ends = list(vertex for vertex in graph if vertex.number in singles)
+    return [cost]+ends
 
 
 def calculateFScore(startNode, currentNode, unvisitedNodes):
-    mst_cost = mst(unvisitedNodes)
-
-    if unvisitedNodes:
-        minDistToStart = min(startNode - neighbour for neighbour in unvisitedNodes)
-        minDistToCurrent = min(currentNode - neighbour for neighbour in unvisitedNodes)
+    mstResult = mst(unvisitedNodes)
+    mst_cost = mstResult.pop(0)
+    if mstResult:
+        minDistToStart = min(startNode - neighbour for neighbour in mstResult)
+        minDistToCurrent = min(currentNode - neighbour for neighbour in mstResult)
         return mst_cost + minDistToStart + minDistToCurrent
     else:
         return startNode - currentNode
