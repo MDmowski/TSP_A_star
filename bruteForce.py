@@ -3,14 +3,12 @@ from state import State
 
 
 def bruteForce(startNode, G):
-    startNode, G = graphIO.loadGraph(filename)
-
     startState = State([startNode], 0, G)
 
     openStates = {startState} 
     closedStates = set() 
 
-    CUTOFF = 1000000
+    CUTOFF = 500000
 
     while openStates:
         if len(openStates) > CUTOFF:
