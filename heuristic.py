@@ -56,10 +56,20 @@ def mst(graph):
 def calculateFScore(startNode, currentNode, unvisitedNodes):
     mstResult = mst(unvisitedNodes)
     mst_cost = mstResult.pop(0)
-    if mstResult:
-        minDistToStart = min(startNode - neighbour for neighbour in mstResult)
-        minDistToCurrent = min(currentNode - neighbour for neighbour in mstResult)
-        return mst_cost + minDistToStart + minDistToCurrent
+    if len(mstResult) > 1:
+        #minDistToStart = min(startNode - neighbour for neighbour in mstResult)
+        #minDistToCurrent = min(currentNode - neighbour for neighbour in mstResult)
+        minDist = float('inf')
+        for vertex in mstResult:
+            otherEnds = mstResult[:]
+            otherEnds.remove(vertex)
+            for otherVertex in otherEnds:
+                currentDist = (startNode - vertex) + (currentNode - otherVertex)
+                if currentDist < minDist: minDist = currentDist
+        return mst_cost + minDist
+        # return mst_cost + minDistToStart + minDistToCurrent
+    elif mstResult:
+        return (currentNode - mstResult[0])+ (startNode - mstResult[0])
     else:
         return startNode - currentNode
 
