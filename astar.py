@@ -1,4 +1,5 @@
 import graphIO
+import sys
 from AStarState import AStarState
 
 
@@ -16,7 +17,22 @@ def astar(startNode, G):
 
         if currentState.isFinal():
             print(currentState)
-            return currentState.getCycleLength()
+            return currentState.getCycleLength(), len(closedStates)
             break
 
         openStates.update(currentState.expand())
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print('Usage: python3 astar.py filename')
+    else:
+        startNode, G = graphIO.loadGraph(sys.argv[1])
+
+        length, closedStatesNumber = astar(startNode, G)
+
+        print(f'Solution length: {length}\nNumber of closed states: {closedStatesNumber}')
+
+
+
+
+

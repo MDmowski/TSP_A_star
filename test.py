@@ -10,24 +10,26 @@ import pandas
 
 
 @timeout(180)
-def timeFunction(function, *args):
+def timeAlgorithm(function, *args):
     tic = time.perf_counter()
     returnValue = function(*args)
     toc = time.perf_counter()
 
-    if returnValue:
+    if returnValue[0]:
         elapsedTime = toc - tic
     else:
         elapsedTime = None
     
-    return elapsedTime, returnValue
 
+    length, closedStates = returnValue
+    return elapsedTime, length, closedStates 
 
 def runTests():
     MIN_NUM_OF_NODES = 5
     MAX_NUM_OF_NODES = 26
-    NUM_OF_NODES_TO_REPEAT = 20
+    NUM_OF_NODES_TO_REPEAT = [10, 20]
     NUM_OF_REPS = 30
+
 
     rows = []
 
@@ -36,37 +38,38 @@ def runTests():
         row = []
         row.append(nodesNumber)
         try:
-            row.extend(timeFunction(astar, startNode, G))
+            row.extend(timeAlgorithm(astar, startNode, G))
         except TimeoutError:
-            row.extend((None, None))
+            row.extend((None, None, None))
         try:
-            row.extend(timeFunction(greedy, startNode, G))
+            row.extend(timeAlgorithm(greedy, startNode, G))
         except TimeoutError:
-            row.extend((None, None))
+            row.extend((None, None, None))
         try:
-            row.extend(timeFunction(bruteForce, startNode, G))
+            row.extend(timeAlgorithm(bruteForce, startNode, G))
         except TimeoutError:
-            row.extend((None, None))
+            row.extend((None, None, None))
         print(row)
         rows.append(row)
 
-    for _ in range(NUM_OF_REPS):
-        startNode, G = graphIO.generateRandomGraph(NUM_OF_NODES_TO_REPEAT)
-        row = []
-        row.append(NUM_OF_NODES_TO_REPEAT)
-        try:
-            row.extend(timeFunction(astar, startNode, G))
-        except TimeoutError:
-            row.extend((None, None))
-        try:
-            row.extend(timeFunction(greedy, startNode, G))
-        except TimeoutError:
-            row.extend((None, None))
-        row.extend((None, None))
-        print(row)
-        rows.append(row)
+    for nodesNum in NUM_OF_NODES_TO_REPEAT:
+        for _ in range(NUM_OF_REPS):
+            startNode, G = graphIO.generateRandomGraph(nodesNum)
+            row = []
+            row.append(nodesNum)
+            try:
+                row.extend(timeAlgorithm(astar, startNode, G))
+            except TimeoutError:
+                row.extend((None, None, None))
+            try:
+                row.extend(timeAlgorithm(greedy, startNode, G))
+            except TimeoutError:
+                row.extend((None, None, None))
+            row.extend((None, None, None))
+            print(row)
+            rows.append(row)
 
-    columns = ['nodes_number', 'astar_time', 'astar_length', 'greedy_time', 'greedy_length', 'brute_time', 'brute_length']
+    columns = ['nodes_number', 'astar_time', 'astar_length', 'astar_closed', 'greedy_time', 'greedy_length', 'greedy_closed', 'brute_time', 'brute_length', 'brute_closed']
     df = pandas.DataFrame(rows, columns=columns)
     df.to_pickle('timeData.pkl')
 

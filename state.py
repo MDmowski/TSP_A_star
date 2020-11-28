@@ -15,7 +15,7 @@ class State:
         for node in self.path:
             pathString += (str(node.number)+'->')
 
-        return f'State: {pathString} {self.getCycleLength()}'
+        return f'State: {pathString}'
 
     def getCycleLength(self):
         return self.length + (self.startNode() - self.currentNode())

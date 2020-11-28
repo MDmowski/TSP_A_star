@@ -18,5 +18,5 @@ def greedy(startNode, G):
 
         if currentState.isFinal():
             print(currentState)
-            return currentState.getCycleLength()
+            return currentState.getCycleLength(), len(closedStates)
         currentState = min(newStates,key=lambda state: state.length - currentState.length)

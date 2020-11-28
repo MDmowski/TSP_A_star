@@ -12,7 +12,7 @@ geometry: margin=2cm
 # Przyjęte założenia
 
 ## Format pliku wejściowego
-Każdy punkt zapisany w osobnej linijce w postaci wartości współrzednych (liczba zmiennoprzecinkowa) oddzielonych spacją. Pierwszy punkt jest punktem startowym.
+Każdy punkt zapisany w osobnej linijce w postaci wartości współrzędnych (liczba zmiennoprzecinkowa) oddzielonych spacją. Pierwszy punkt jest punktem startowym.
 ```
 0 0
 1 0.5
@@ -20,11 +20,8 @@ Każdy punkt zapisany w osobnej linijce w postaci wartości współrzednych (lic
 ...
 ```
 
-## Format pliku wyjściowego
-Taki sam jak format pliku wejściowego. Punkty posortowane w kolejności ułożenia ich na ścieżce.
-
 ## Wybrany język
-Python
+Python wersja 3.
 
 ## Doprecyzowanie treści
 Każdy punkt w pliku wejściowym to jeden wierzchołek grafu. Każdy wierzchołek łączy się ze wszystkimi pozostałymi (graf pełny), a waga danej krawędzi to odległość między
@@ -32,14 +29,12 @@ Każdy punkt w pliku wejściowym to jeden wierzchołek grafu. Każdy wierzchołe
 
 ## Podział zadań
 
-### TODO
-- export state to file - A
-- implement greedy alg. - M
-- implement brute force - M
-- implement timing - A
-- measure time for different algs. - A
-- visualize - A
-- conclusions - A,M
+- implementacja heurystyki \- Maciej Dmowski
+- implementacja algorytmu A* \- Adam Szałowski, Maciej Dmowski
+- implementacja algorytmu zachłannego i brute force \- Maciej Dmowski
+- przeprowadzenie eksperymentów \- Adam Szałowski
+- wizualizacja wyników eksperymentów \- Adam Szałowski
+- wnioski \- Adam Szałowski, Maciej Dmowski
 
 # Opis algorytmu
 
@@ -55,28 +50,62 @@ Dla tak zdefiniowanego stanu możemy określić kilka ważnych elementów algory
 Mają te elementy możemy zapisać kroki algorytmu:
 
 1. Stan początkowy umieszczamy w zbiorze otwartych stanów - openStates.
-2. Wybieramy stan s z openStates, który ma minimalną wartość funkcji *F(state)* i przenosimy go do zbiory zamkniętych wierzchołków - closedStates.
+2. Wybieramy stan s z openStates, który ma minimalną wartość funkcji *F(state)* i przenosimy go do zbioru zamkniętych wierzchołków - closedStates.
 3. Jeżeli s jest stanem końcowym kończymy działanie algorytmu. Rozwiązaniem problemu jest cykl utworzony ze ścieżki stanu s poprzez dodanie na jej koniec elementu początkowego.
 4. Do openStates dodajemy wszystkich następców stanu s.
 
-By móc zaimplementować ten algorytm pozostaje nam zdefiniowanie funckji *F(state)* jako:
+By móc zaimplementować ten algorytm pozostaje nam zdefiniowanie funkcji *F(state)* jako:
 $$F(state) = g(state) + h(state)$$ 
-, gdzie *g(state)* to długości ścieżki stanu czyli suma wag krawędzi pomiędzy kolejnymi elementami ścieżki natomiast *h(state)* to wybrana przez nas heurystyka, która usprawni wyszukiwanie odpowiednich stanów. Dla problemu komiwojażerazdecydowaliśmy, że dobrym rozwiązaniem będzie to suma krawędzi minimalnego drzewa rozpinającego utworzonego z nieodwiedzonych wierzchołków i minimalnych wag krawędzi łączacych krańce tego drzewa z początkowym i końcowym elementem ścieżki.
+, gdzie *g(state)* to długości ścieżki stanu czyli suma wag krawędzi pomiędzy kolejnymi elementami ścieżki 
+natomiast *h(state)* to wybrana przez nas heurystyka, która usprawni wyszukiwanie odpowiednich stanów. 
+Dla problemu komiwojażera zdecydowaliśmy, że dobrym rozwiązaniem będzie to 
+suma krawędzi minimalnego drzewa rozpinającego utworzonego z nieodwiedzonych wierzchołków 
+plus minimalne wagi krawędzi łączących krańce tego drzewa z początkowym i końcowym elementem ścieżki.
 
 # Analiza
 
 ## Przeprowadzone testy
 
-![](plots/astar.png){ width=75% }
+Dla sprawdzenia i porównania jakości zaimplementowanych algorytmów dla każdego z nich zebraliśmy następujące dane:
 
-![](plots/comparison.png){ width=75% }
+- czas rozwiązania problemu ( czas od momentu uruchomienia do zakończenia działania funkcji )
+- długość wyznaczonego cyklu
+- liczba odwiedzonych stanów
 
-![](plots/greedy.png){ width=75% }
+Testy można podzielić na dwa etapy:
+
+1. Dla liczby wierzchołków od 5 do 26 generowaliśmy zestaw danych i każdy z nich przekazywaliśmy do każdego z algorytmów.
+2. Dla liczby wierzchołków 10 oraz 20 generowaliśmy po 30 zestawów danych i przekazywaliśmy je do algorytmu A\* oraz zachłannego.
+
+W trakcie przeprowadzania testów jeżeli czas działania algorytmu przekroczył dla konkretnych danych czas 180 s. kończyliśmy jego działania.
+
+## Wykresy
+
+![](plots/test1.png){ width=50% }
+
+![](plots/test2astar.png){ width=50% }\ ![](plots/test2comparison.png){ width=50% }
 
 
-# Wnioski
--
+## Wnioski
+Na podstawie wykresu 1. pierwszego możemy stwierdzić, że zgodnie z przypuszczeniami najbardziej wydajny czasowo jest algorytm zachłanny jednakże zaimplementowany przez nas algorytm A\* dla liczby wierzchołków nie przekraczającej 20 jest bardzo zbliżony. Dla większych zestawów danych zaczyna odbiegać od zachłannego ale i tak wykazuje znaczną przewagę nad algorytmem brute force.
 
+Analizując wykres 2. możemy zauważyć, że przy naszym algorytmie czas znalezienia rozwiązania jest zależny nie tylko od liczby wierzchołków ale także od ich ułożenia. Rozbieżności są na tyle duże, że dla niektórych danych czas wydłuża się kilka rzędów wielkości. W takich przypadkach przypuszczamy, że ułożenie wierzchołków powoduje, że funkcja heurystyki oparta o minimalne drzewo rozpinające nie zmienia się dla kolejnych stanów przez co algorytm przez pewien czas zaczyna zachowywać się podobnie do brute force.
+
+Pomimo tego, że algorytm zachłanny jest bardziej wydajny czasowo to nie zawsze wyznacza rozwiązanie optymalne. Z wykresu 3. możemy odczytać, że rozwiązania zwracane przez algorytm zachłanny są gorsze od A\* kilku do kilkudziesięciu procent ale zdarzają się też pojedyncze przypadki gdzie rozwiązania są równe. Na podstawie danych możemy zauważyć, że im więcej wierzchołków tym różnica procentowa jest większa.
+
+Czas znaleziania rozwiązania przy użyciu A\* zależy od jakości zastosowanej funkcji heurystycznej więc chcąć poprawić algorytm należało by się skupić na ulepszeniu heurystyki. W trakcie realizacji projektu udoskonalaliśmy ją kilkukrotnie.
+
+# Instrukcja używania
+
+## Wymagania
+Do samego uruchomienia programów nie są potrzebne żadne dodatkowe biblioteki. Jeśli jednak potrzebne byłoby ponowne wygenerowanie danych za pomocą modułu *runTests.py* wymagane jest zainstalowanie biblioteki [pandas](https://pandas.pydata.org/). Analogicznie do wygenerowania wykresów ( plik *analysis.ipyn* ) potrzebna jest biblioteka [matplotlib](https://matplotlib.org/) oraz program [jupyter](https://jupyter.org/index.html).
+
+## Uruchomienie dla pliku wejściowego
+- Algorytm A*: python3 astar.py plik_z_wierzcholkami.txt
+- Algorytm zachłannego: python3 greedy.py plik_z_wierzcholkami.txt
+- Algorytm brute force: python3 bruteForce.py plik_z_wierzcholkami.txt
+
+Przykładowe dane znajdują się w katalogu *data*.
 
 
 

@@ -12,7 +12,7 @@ def bruteForce(startNode, G):
 
     while openStates:
         if len(openStates) > CUTOFF:
-            return None
+            return None, None
         currentState = openStates.pop()
 
         closedStates.add(currentState)
@@ -21,4 +21,4 @@ def bruteForce(startNode, G):
 
     solution = min(state for state in closedStates if state.isFinal())
     print(solution)
-    return solution.getCycleLength()
+    return solution.getCycleLength(), len(closedStates)
