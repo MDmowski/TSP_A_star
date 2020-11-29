@@ -89,11 +89,11 @@ W trakcie przeprowadzania testów jeżeli czas działania algorytmu przekroczył
 ## Wnioski
 Na podstawie wykresu 1. pierwszego możemy stwierdzić, że zgodnie z przypuszczeniami najbardziej wydajny czasowo jest algorytm zachłanny jednakże zaimplementowany przez nas algorytm A\* dla liczby wierzchołków nie przekraczającej 20 jest bardzo zbliżony. Dla większych zestawów danych zaczyna odbiegać od zachłannego ale i tak wykazuje znaczną przewagę nad algorytmem brute force.
 
-Analizując wykres 2. możemy zauważyć, że przy naszym algorytmie czas znalezienia rozwiązania jest zależny nie tylko od liczby wierzchołków ale także od ich ułożenia. Rozbieżności są na tyle duże, że dla niektórych danych czas wydłuża się kilka rzędów wielkości. W takich przypadkach przypuszczamy, że ułożenie wierzchołków powoduje, że funkcja heurystyki oparta o minimalne drzewo rozpinające nie zmienia się dla kolejnych stanów przez co algorytm przez pewien czas zaczyna zachowywać się podobnie do brute force.
+Analizując wykres 2. możemy zauważyć, że przy naszym algorytmie czas znalezienia rozwiązania jest zależny nie tylko od liczby wierzchołków ale także od ich ułożenia. Rozbieżności są na tyle duże, że dla niektórych danych czas zwiększa się o kilka rzędów wielkości. W takich przypadkach przypuszczamy, że ułożenie wierzchołków powoduje, że funkcja heurystyki oparta o minimalne drzewo rozpinające nie zmienia się dla kolejnych stanów przez co algorytm przez pewien czas zaczyna zachowywać się podobnie do brute force.
 
-Pomimo tego, że algorytm zachłanny jest bardziej wydajny czasowo to nie zawsze wyznacza rozwiązanie optymalne. Z wykresu 3. możemy odczytać, że rozwiązania zwracane przez algorytm zachłanny są gorsze od A\* kilku do kilkudziesięciu procent ale zdarzają się też pojedyncze przypadki gdzie rozwiązania są równe. Na podstawie danych możemy zauważyć, że im więcej wierzchołków tym różnica procentowa jest większa.
+Pomimo tego, że algorytm zachłanny jest bardziej wydajny czasowo to nie zawsze wyznacza rozwiązanie optymalne. Z wykresu 3. możemy odczytać, że rozwiązania zwracane przez algorytm zachłanny są gorsze od A\* od kilku do kilkudziesięciu procent ale zdarzają się też pojedyncze przypadki gdzie rozwiązania są równe. Na podstawie danych możemy zauważyć, że im więcej wierzchołków tym różnica procentowa jest większa.
 
-Czas znaleziania rozwiązania przy użyciu A\* zależy od jakości zastosowanej funkcji heurystycznej więc chcąć poprawić algorytm należało by się skupić na ulepszeniu heurystyki. W trakcie realizacji projektu udoskonalaliśmy ją kilkukrotnie.
+Czas znalezienia rozwiązania przy użyciu A\* zależy od jakości zastosowanej funkcji heurystycznej więc chcąc poprawić algorytm należałoby się skupić na ulepszeniu heurystyki. W trakcie realizacji projektu udoskonalaliśmy ją kilkukrotnie.
 
 # Instrukcja używania
 
